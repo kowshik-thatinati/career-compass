@@ -20,6 +20,7 @@ function ChatInterface({ onToggleView }) {
   const { isDarkMode, toggleTheme } = useTheme();
 
   const [input, setInput] = useState('');
+  const inputRef = useRef(null);
   const [conversations, setConversations] = useState([{
     id: 'default',
     title: 'New Chat',
@@ -170,6 +171,7 @@ function ChatInterface({ onToggleView }) {
     );
 
     const userInput = input;
+    const attachedFiles = selectedFiles;
     setInput('');
     setSelectedFiles([]);
     setIsThinking(true);
@@ -184,14 +186,31 @@ function ChatInterface({ onToggleView }) {
       );
     }
 
-    // Call backend for Gemini API
     try {
-      const res = await fetch(API_ENDPOINTS.GEMINI, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: userInput }),
-      });
-      const data = await res.json();
+      let data;
+
+      if (attachedFiles.length > 0) {
+        // For now just send files + question to the same Gemini endpoint using FormData
+        const formData = new FormData();
+        formData.append('prompt', userInput);
+        attachedFiles.forEach((file, index) => {
+          formData.append('files', file);
+        });
+
+        const res = await fetch(API_ENDPOINTS.GEMINI, {
+          method: 'POST',
+          body: formData,
+        });
+        data = await res.json();
+      } else {
+        const res = await fetch(API_ENDPOINTS.GEMINI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: userInput }),
+        });
+        data = await res.json();
+      }
+
       const botReply = { sender: 'bot', text: data.text || "Sorry, no response from Gemini." };
 
       setConversations(prev =>
@@ -234,7 +253,17 @@ function ChatInterface({ onToggleView }) {
     setActiveId('default');
   };
 
-  
+  // Auto-resize textarea based on content
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setInput(value);
+
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
+  };
+
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   return (
@@ -300,10 +329,11 @@ function ChatInterface({ onToggleView }) {
               </div>
             )}
             <textarea
+              ref={inputRef}
               className="input-box"
               value={input}
               placeholder={t('placeholder')}
-              onChange={e => setInput(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
               rows={1}
               aria-label="Chat Input"
