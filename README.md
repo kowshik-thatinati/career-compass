@@ -1,3 +1,6 @@
+
+
+
 # 🎓 Career Compass
 
 **Navigate your career journey with precision** - An AI-powered career guidance platform that helps students and professionals make informed decisions about their education, career paths, and professional development.
@@ -766,10 +769,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Need help? Have questions?
 
-- 📧 **Email**: your-email@example.com
+- 📧 **Email**: chinna4812@example.com
 - 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/career-compass/issues)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/career-compass/discussions)
 - 📖 **Documentation**: [Wiki](https://github.com/yourusername/career-compass/wiki)
+
+( NOTE : AFTER OPENING THE ABOVE LINK IN URL REPLACE "yourusername" WITH YOUR GITHUB USERNAME. OTHERWISE THE LINK WONT'T WORK. )
 
 ## 🔮 Future Enhancements
 
@@ -816,6 +821,8 @@ If you find this project helpful, please consider giving it a star on GitHub! �
 
 **Made with ❤️ for students and professionals navigating their career journey**
 
+
 **Version**: 1.0.0  
-**Last Updated**: November 2024  
-**Maintained by**: [Your Name/Team]
+**Last Updated**: November 2025  
+**Maintained by**: TEAM CRYPT
+
